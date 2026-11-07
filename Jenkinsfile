@@ -4,7 +4,7 @@ pipeline {
     environment {
         GIT_REPO   = 'https://github.com/askmuhammadtayyab786-max/filefordgewithjenkins.git'
         GIT_BRANCH = 'main'
-        APP_IP     = '3.129.8.249'
+        APP_IP     = '65.1.95.241'
     }
 
     stages {
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 sh 'sleep 20'
                 sh 'docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-                sh 'curl -f --retry 5 --retry-delay 5 http://3.129.8.249 && echo "SUCCESS" || echo "WARNING: not responding yet"'
+                sh 'curl -f --retry 5 --retry-delay 5 http://65.1.95.241 && echo "SUCCESS" || echo "WARNING: not responding yet"'
             }
         }
     }
