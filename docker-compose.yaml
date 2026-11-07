@@ -1,4 +1,13 @@
-  # ─── Backend ────────────────────────────────
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app_network
+
   backend:
     build: ./backend
     image: backend
@@ -18,7 +27,6 @@
     networks:
       - app_network
 
-  # ─── Frontend ───────────────────────────────
   frontend:
     build: ./frontend
     image: frontend
@@ -33,3 +41,24 @@
       - backend
     networks:
       - app_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app_network
+
+volumes:
+  mongo_data:
+
+networks:
+  app_network:
+    driver: bridge
