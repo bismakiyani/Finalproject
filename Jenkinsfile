@@ -1,18 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        GIT_REPO   = 'https://github.com/askmuhammadtayyab786-max/filefordgewithjenkins.git'
-        GIT_BRANCH = 'main'
-        APP_IP     = '65.1.95.241'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${GIT_BRANCH}",
-                    credentialsId: 'github-creds',
-                    url: "${GIT_REPO}"
+                checkout scm
             }
         }
 
@@ -47,8 +39,8 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh 'sleep 20'
-                sh 'docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-                sh 'curl -f --retry 5 --retry-delay 5 http://65.1.95.241 && echo "SUCCESS" || echo "WARNING: not responding yet"'
+                sh 'docker ps --format "table {{.Names}}\\t{{.Status}}\\t{{.Ports}}"'
+                sh 'curl -f --retry 5 --retry-delay 5 http://localhost && echo "SUCCESS" || echo "WARNING: not responding yet"'
             }
         }
     }
